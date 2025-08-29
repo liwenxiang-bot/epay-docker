@@ -18,19 +18,22 @@ DB_USER=${DB_USER:-epay_user}
 DB_PASSWORD=${DB_PASSWORD:-epay_pass}
 DB_PREFIX=${DB_PREFIX:-pay}
 
-# 检查 config.php 文件是否存在
-if [ ! -f /var/www/html/config.php ]; then
-    echo "Warning: config.php not found! Please create it manually."
-    echo "Database configuration should be:"
-    echo "  Host: ${DB_HOST}"
-    echo "  Port: ${DB_PORT}"
-    echo "  Database: ${DB_NAME}"
-    echo "  Username: ${DB_USER}"
-    echo "  Password: ${DB_PASSWORD}"
-    echo "  Prefix: ${DB_PREFIX}"
-else
-    echo "Config.php found, using existing configuration."
-fi
+# 生成 config.php 文件
+echo "Generating config.php..."
+cat > /var/www/html/config.php << EOF
+<?php
+/*数据库配置*/
+\$dbconfig=array(
+    'host' => '${DB_HOST}', //数据库服务器
+    'port' => ${DB_PORT}, //数据库端口
+    'user' => '${DB_USER}', //数据库用户名
+    'pwd' => '${DB_PASSWORD}', //数据库密码
+    'dbname' => '${DB_NAME}', //数据库名
+    'dbqz' => '${DB_PREFIX}' //数据表前缀
+);
+EOF
+
+echo "Config.php generated successfully!"
 
 # 检查数据库是否已初始化
 echo "Checking database initialization..."
