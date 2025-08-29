@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Epay 生产环境部署脚本
 # 适用于 Ubuntu Linux x86_64
@@ -204,6 +204,11 @@ if [[ ! -f "$COMPOSE_FILE" ]]; then
     log_error "未找到 $COMPOSE_FILE 文件"
     log_error "请在项目根目录中运行此脚本"
     exit 1
+fi
+
+# 确保脚本有可执行权限
+if [[ ! -x "$0" ]]; then
+    chmod +x "$0"
 fi
 
 # 运行主函数
