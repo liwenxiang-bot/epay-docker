@@ -7,8 +7,10 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html:rw
       - ./docker/php.ini:/usr/local/etc/php/php.ini
+      - app_data:/var/www/html/data
+    user: "1000:1000"
     environment:
       - DB_HOST=mysql
       - DB_PORT=3306
@@ -30,6 +32,8 @@ services:
       MYSQL_USER: ${DB_USER:-epay_user}
       MYSQL_PASSWORD: ${DB_PASSWORD:-epay_pass}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_RANDOM_ROOT_PASSWORD: "no"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./docker/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
@@ -55,6 +59,8 @@ services:
 
 volumes:
   mysql_data:
+    driver: local
+  app_data:
     driver: local
 
 networks:

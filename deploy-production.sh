@@ -129,6 +129,16 @@ check_ports() {
 deploy() {
     log_info "开始部署 $PROJECT_NAME..."
     
+    # 创建数据目录并设置权限
+    log_info "创建数据目录并设置权限..."
+    mkdir -p ./data
+    sudo chown -R 1000:1000 ./data
+    chmod -R 755 ./data
+    
+    # 确保应用目录权限正确
+    log_info "设置应用目录权限..."
+    sudo chown -R 1000:1000 .
+    
     # 拉取镜像
     log_info "拉取 Docker 镜像..."
     docker-compose pull
