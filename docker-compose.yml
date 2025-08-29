@@ -11,13 +11,7 @@ services:
       - ./docker/php.ini:/usr/local/etc/php/php.ini
       - app_data:/var/www/html/data
     user: "1000:1000"
-    environment:
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_NAME=${DB_NAME:-epay}
-      - DB_USER=${DB_USER:-epay_user}
-      - DB_PASSWORD=${DB_PASSWORD:-epay_pass}
-      - DB_PREFIX=${DB_PREFIX:-pay}
+    # 应用容器不需要数据库环境变量，通过Web安装程序配置
     depends_on:
       - mysql
     networks:
@@ -28,12 +22,10 @@ services:
     container_name: epay-mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_NAME:-epay}
-      MYSQL_USER: ${DB_USER:-epay_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-epay_pass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-epay}
+      MYSQL_USER: ${MYSQL_USER:-epay_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-epay_pass}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
-      MYSQL_RANDOM_ROOT_PASSWORD: "no"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./docker/mysql.cnf:/etc/mysql/conf.d/mysql.cnf

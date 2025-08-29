@@ -107,6 +107,7 @@ check_env() {
     fi
     
     log_success "环境配置检查通过"
+    log_info "数据库将通过Web安装程序进行初始化"
 }
 
 # 检查端口占用
@@ -160,10 +161,22 @@ deploy() {
         echo ""
         log_info "访问信息:"
         log_info "  应用地址: http://$(hostname -I | awk '{print $1}'):$APP_PORT"
-        log_info "  管理后台: http://$(hostname -I | awk '{print $1}'):$APP_PORT/admin/"
-        log_info "  默认账号: admin / 123456"
+        log_info "  安装页面: http://$(hostname -I | awk '{print $1}'):$APP_PORT/install/"
         echo ""
-        log_warning "重要提醒:"
+        log_warning "下一步操作:"
+        log_warning "1. 访问安装页面完成初始化"
+        log_warning "2. 使用以下数据库信息进行安装:"
+        MYSQL_DATABASE=$(grep "MYSQL_DATABASE=" .env | cut -d'=' -f2)
+        MYSQL_USER=$(grep "MYSQL_USER=" .env | cut -d'=' -f2)
+        MYSQL_PASSWORD=$(grep "MYSQL_PASSWORD=" .env | cut -d'=' -f2)
+        log_warning "   主机: mysql"
+        log_warning "   端口: 3306"
+        log_warning "   数据库: ${MYSQL_DATABASE:-epay}"
+        log_warning "   用户名: ${MYSQL_USER:-epay_user}"
+        log_warning "   密码: ${MYSQL_PASSWORD:-epay_pass}"
+        log_warning "   前缀: pay"
+        echo ""
+        log_warning "安装完成后请:"
         log_warning "1. 立即修改管理员密码"
         log_warning "2. 配置宿主机 nginx 反向代理和 SSL"
         log_warning "3. 设置防火墙规则"
