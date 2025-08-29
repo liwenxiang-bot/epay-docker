@@ -1,0 +1,62 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: epay-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php.ini:/usr/local/etc/php/php.ini
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-epay}
+      - DB_USER=${DB_USER:-epay_user}
+      - DB_PASSWORD=${DB_PASSWORD:-epay_pass}
+      - DB_PREFIX=${DB_PREFIX:-pay}
+    depends_on:
+      - mysql
+    networks:
+      - epay-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: epay-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-epay}
+      MYSQL_USER: ${DB_USER:-epay_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-epay_pass}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+    ports:
+      - "3306:3306"
+    networks:
+      - epay-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: epay-nginx
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - epay-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  epay-network:
+    driver: bridge

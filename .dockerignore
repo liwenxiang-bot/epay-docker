@@ -1,0 +1,52 @@
+# Git
+.git/
+.gitignore
+
+# Docker 相关
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 文档
+README*.md
+*.md
+
+# 环境配置
+.env
+.env.*
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Node.js (如果存在)
+node_modules/
+npm-debug.log*
+
+# PHP Composer (如果存在)
+vendor/
+composer.lock
+
+# 部署脚本
+deploy.sh
+
+# 备份文件
+*.bak
+*.backup
+*.sql
+
+# 缓存
+cache/
+temp/
+tmp/
