@@ -1,0 +1,13 @@
+<?php
+/*
+ * 数据库配置文件
+ * 部署时请复制此文件为 config.php 并修改配置
+ */
+$dbconfig=array(
+	'host' => 'rm-xxxx.mysql.rds.aliyuncs.com', //数据库服务器（阿里云RDS地址）
+	'port' => 3306, //数据库端口
+	'user' => 'your_username', //数据库用户名
+	'pwd' => 'your_password', //数据库密码
+	'dbname' => 'epay', //数据库名
+	'dbqz' => 'pay' //数据表前缀
+);

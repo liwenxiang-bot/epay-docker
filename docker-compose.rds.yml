@@ -1,0 +1,40 @@
+# Epay Docker - 阿里云 RDS 版本
+# 使用外部数据库，不包含本地 MySQL 服务
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: epay-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html:rw
+      - ./docker/php.ini:/usr/local/etc/php/php.ini
+      - app_data:/var/www/html/data
+    networks:
+      - epay-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: epay-nginx
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - epay-network
+
+volumes:
+  app_data:
+    driver: local
+
+networks:
+  epay-network:
+    driver: bridge
