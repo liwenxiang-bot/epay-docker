@@ -109,6 +109,12 @@ deploy() {
     mkdir -p ./data
     chmod -R 755 ./data ./install 2>/dev/null || true
 
+    # 创建安装锁文件（数据库已通过 RDS 初始化）
+    if [[ ! -f ./install/install.lock ]]; then
+        echo "installed" > ./install/install.lock
+        log_info "已创建 install.lock 文件"
+    fi
+
     # 构建并启动服务
     log_info "构建并启动服务..."
     $DOCKER_COMPOSE -f $COMPOSE_FILE up -d --build
