@@ -51,25 +51,32 @@ if(!defined('IN_PLUGIN'))exit();
 <div class="tip-text">
 </div>
 </div>
-<script src="<?php echo $cdnpublic?>jquery/1.12.4/jquery.min.js"></script>
+<script src="/assets/js/jquery-1.12.4.min.js"></script>
 <script src="<?php echo $cdnpublic?>layer/3.1.1/layer.min.js"></script>
-<script src="<?php echo $cdnpublic?>jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="/assets/js/jquery.qrcode.min.js"></script>
 <script>
 	var code_url = '<?php echo $code_url?>';
     var code_type = code_url.indexOf('data:image/')>-1?1:0;
-    if(code_type == 0){
-        var url_scheme = 'upwallet://html/' + code_url.replace('https://', '').replace('http://', '');
-        $('#qrcode').qrcode({
-            text: code_url,
-            width: 230,
-            height: 230,
-            foreground: "#000000",
-            background: "#ffffff",
-            typeNumber: -1
-        });
-    }else{
-        $('#qrcode').html('<img src="'+code_url+'"/>');
-    }
+    var url_scheme = '';
+    $(function(){
+        if(code_type == 0){
+            url_scheme = 'upwallet://html/' + code_url.replace('https://', '').replace('http://', '');
+            try {
+                $('#qrcode').qrcode({
+                    text: code_url,
+                    width: 230,
+                    height: 230,
+                    foreground: "#000000",
+                    background: "#ffffff",
+                    typeNumber: -1
+                });
+            } catch(e) {
+                $('#qrcode').html('<div style="padding:20px;color:#f00;">二维码加载失败，请刷新页面重试</div>');
+            }
+        }else{
+            $('#qrcode').html('<img src="'+code_url+'"/>');
+        }
+    });
     // 订单详情
     $('#orderDetail .arrow').click(function (event) {
         if ($('#orderDetail').hasClass('detail-open')) {

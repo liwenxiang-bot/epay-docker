@@ -60,10 +60,10 @@ if (!defined('IN_PLUGIN'))
                 </div>
             </div>
         </div>
-        <script src="<?php echo $cdnpublic ?>jquery/1.12.4/jquery.min.js"></script>
+        <script src="/assets/js/jquery-1.12.4.min.js"></script>
         <script src="<?php echo $cdnpublic ?>layer/3.1.1/layer.min.js"></script>
-        <script src="<?php echo $cdnpublic ?>jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
-        <script src="<?php echo $cdnpublic ?>clipboard.js/1.7.1/clipboard.min.js"></script>
+        <script src="/assets/js/jquery.qrcode.min.js"></script>
+        <script src="/assets/js/clipboard.min.js"></script>
         <script>
             var clipboard = new Clipboard('#copy-btn');
             clipboard.on('success', function (e) {
@@ -72,13 +72,19 @@ if (!defined('IN_PLUGIN'))
             clipboard.on('error', function (e) {
                 layer.msg('复制失败，请长按链接后手动复制');
             });
-            $('#qrcode').qrcode({
-                text: "<?php echo $code_url ?>",
-                width: 230,
-                height: 230,
-                foreground: "#000000",
-                background: "#ffffff",
-                typeNumber: -1
+            $(function(){
+                try {
+                    $('#qrcode').qrcode({
+                        text: "<?php echo $code_url ?>",
+                        width: 230,
+                        height: 230,
+                        foreground: "#000000",
+                        background: "#ffffff",
+                        typeNumber: -1
+                    });
+                } catch(e) {
+                    $('#qrcode').html('<div style="padding:20px;color:#f00;">二维码加载失败，请刷新页面重试</div>');
+                }
             });
             function downloadCanvas() {
                 var canvas = document.getElementsByTagName('canvas')[0];
