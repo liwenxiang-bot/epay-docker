@@ -59,6 +59,10 @@ class Payment {
 				break;
 			case 'qrcode': //扫码页面
 			case 'scheme': //跳转urlscheme页面
+				if(empty($result['url'])){
+					sysmsg('支付通道暂时不可用，请稍后重试或选择其他支付方式');
+					break;
+				}
 				if($result['page'] == 'wxpay_mini') $result['page'] = 'wxpay_h5';
 				include_once SYSTEM_ROOT.'txprotect.php';
 				$code_url = $result['url'];
