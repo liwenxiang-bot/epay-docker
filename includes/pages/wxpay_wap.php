@@ -104,13 +104,13 @@ if (!defined('IN_PLUGIN'))
                     success: function (data) {
                         if (data.code == 1) {
                  			layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
-                 			setTimeout(window.location.href=data.backurl, 1000);
+                 			setTimeout(function(){window.location.href=data.backurl;}, 1000);
                         }else{
-                            setTimeout("loadmsg()", 2000);
+                            setTimeout(loadmsg, 2000);
                         }
                     },
                     error: function () {
-                        setTimeout("loadmsg()", 2000);
+                        setTimeout(loadmsg, 2000);
                     }
                 });
             }
@@ -123,7 +123,7 @@ if (!defined('IN_PLUGIN'))
                     success: function (data) {
                         if (data.code == 1) {
                             layer.msg('支付成功，正在跳转中...', { icon: 16, shade: 0.1, time: 15000 });
-                            setTimeout(window.location.href = data.backurl, 1000);
+                            setTimeout(function(){window.location.href = data.backurl;}, 1000);
                         } else {
                             layer.msg('您还未完成付款，请继续付款', { shade: 0, time: 1500 });
                         }
@@ -143,7 +143,7 @@ if (!defined('IN_PLUGIN'))
                     }
                 };
                 window.history.pushState('forward', null, '');
-                setTimeout("loadmsg()", 3000);
+                setTimeout(loadmsg, 3000);
             }
         </script>
     </body>

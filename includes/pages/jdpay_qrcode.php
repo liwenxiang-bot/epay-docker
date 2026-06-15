@@ -96,18 +96,18 @@ if(!defined('IN_PLUGIN'))exit();
             success: function (data) {
                 if (data.code == 1) {
 					layer.msg('支付成功，正在跳转中...', {icon: 16,shade: 0.1,time: 15000});
-					setTimeout(window.location.href=data.backurl, 1000);
+					setTimeout(function(){window.location.href=data.backurl;}, 1000);
                 }else{
-                    setTimeout("loadmsg()", 2000);
+                    setTimeout(loadmsg, 2000);
                 }
             },
             error: function () {
-                setTimeout("loadmsg()", 2000);
+                setTimeout(loadmsg, 2000);
             }
         });
     }
 	window.onload = function(){
-		setTimeout("loadmsg()", 2000);
+		setTimeout(loadmsg, 2000);
 	}
 </script>
 </body>
