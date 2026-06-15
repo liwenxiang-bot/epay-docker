@@ -69,7 +69,7 @@ if(!defined('IN_PLUGIN'))exit();
                     typeNumber: -1
                 });
             } catch(e) {
-                $('#qrcode').html('<div style="padding:20px;color:#f00;">二维码加载失败，请刷新页面重试</div>');
+                $('#qrcode').html('<div style="padding:20px;color:#f00;">二维码加载失败<br/><a href="javascript:location.reload()" style="display:inline-block;margin-top:10px;padding:6px 20px;background:#1677ff;color:#fff;border-radius:4px;text-decoration:none;">点击重试</a></div>');
             }
         }else{
             $('#qrcode').html('<img src="'+code_url+'"/>');
